@@ -1,0 +1,6 @@
+# Kolejnosc tutaj = kolejnosc na stronie.
+# slug  - krotka nazwa techniczna, uzywana w plikach zabaw (pole "kategoria")
+# nazwa - nazwa wyswietlana, mozna ja zmieniac bez ruszania zabaw
+- slug: lina
+  nazwa: Z liną i na zatrzymanie
+  opis: Zabawy z linką oraz zabawy na reakcję i zastygnięcie.

@@ -1,0 +1,12 @@
+---
+layout: default
+---
+{% assign kat = site.data.kategorie | where: "slug", page.kategoria | first %}
+<article class="card">
+  {% if page.obrazek %}<img class="ico" src="{{ '/assets/img/' | append: page.obrazek | relative_url }}" alt="">{% endif %}
+  <h1>{{ page.title }}</h1>
+  <p class="meta">{% if kat %}{{ kat.nazwa }}{% endif %}{% if page.wiek %} · {{ page.wiek }}{% endif %}</p>
+  {% if page.rekwizyty %}<p><strong>Rekwizyty:</strong> {{ page.rekwizyty }}</p>{% endif %}
+  {{ content }}
+</article>
+<p><a href="{{ '/lista/' | relative_url }}">← Wszystkie zabawy</a></p>
