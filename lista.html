@@ -1,0 +1,22 @@
+---
+layout: default
+title: Wszystkie zabawy
+permalink: /lista/
+---
+<h1>Wszystkie zabawy</h1>
+{% for k in site.data.kategorie %}
+{% assign zabawy = site.zabawy | where: "kategoria", k.slug %}
+{% if zabawy.size > 0 %}
+<h2>{{ k.nazwa }}</h2>
+{% if k.opis %}<p class="meta">{{ k.opis }}</p>{% endif %}
+<div class="grid">
+{% for z in zabawy %}
+  <a class="card link" href="{{ z.url | relative_url }}">
+    {% if z.obrazek %}<img class="ico small" src="{{ '/assets/img/' | append: z.obrazek | relative_url }}" alt="">{% endif %}
+    <strong>{{ z.title }}</strong>
+    <span class="meta">{{ z.wiek }}</span>
+  </a>
+{% endfor %}
+</div>
+{% endif %}
+{% endfor %}

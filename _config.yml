@@ -1,0 +1,23 @@
+title: Zabawy ruchowe
+description: Zbiór zabaw ruchowych dla przedszkolaków z losowaniem
+lang: pl
+# Dla repozytorium o nazwie "zabawy" (adres uzytkownik.github.io/zabawy) wpisz: baseurl: "/zabawy"
+# Dla repozytorium uzytkownik.github.io zostaw puste.
+baseurl: ""
+
+collections:
+  zabawy:
+    output: true
+    permalink: /zabawy/:name/
+
+defaults:
+  - scope:
+      path: ""
+      type: zabawy
+    values:
+      layout: zabawa
+
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock

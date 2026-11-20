@@ -1,0 +1,77 @@
+---
+layout: default
+title: Losowanie zabaw
+---
+<h1>Losowanie zabaw ruchowych</h1>
+<div class="cats" id="cats"></div>
+<button id="draw" class="draw">Losuj zabawę</button>
+<div id="result"></div>
+<script>
+var BASE = {{ site.baseurl | jsonify }};
+var KATEGORIE = {{ site.data.kategorie | jsonify }};
+var ZABAWY = [
+{% for z in site.zabawy %}
+  {
+    url: {{ z.url | jsonify }},
+    tytul: {{ z.title | jsonify }},
+    kategoria: {{ z.kategoria | jsonify }},
+    wiek: {{ z.wiek | default: "" | jsonify }},
+    rekwizyty: {{ z.rekwizyty | default: "" | jsonify }},
+    obrazek: {{ z.obrazek | default: "" | jsonify }},
+    skrot: {{ z.skrot | default: "" | jsonify }}
+  }{% unless forloop.last %},{% endunless %}
+{% endfor %}
+];
+
+var wybrana = "";
+
+function nazwaKategorii(slug) {
+  for (var i = 0; i < KATEGORIE.length; i++) {
+    if (KATEGORIE[i].slug === slug) return KATEGORIE[i].nazwa;
+  }
+  return slug;
+}
+
+function pula() {
+  return ZABAWY.filter(function (z) { return !wybrana || z.kategoria === wybrana; });
+}
+
+function rysujKategorie() {
+  var el = document.getElementById("cats");
+  el.innerHTML = "";
+  var opcje = [{ slug: "", nazwa: "Wszystkie" }];
+  KATEGORIE.forEach(function (k) {
+    if (ZABAWY.some(function (z) { return z.kategoria === k.slug; })) opcje.push(k);
+  });
+  opcje.forEach(function (k) {
+    var b = document.createElement("button");
+    b.textContent = k.nazwa;
+    if (k.slug === wybrana) b.className = "on";
+    b.onclick = function () {
+      wybrana = k.slug;
+      rysujKategorie();
+      document.getElementById("result").innerHTML = "";
+    };
+    el.appendChild(b);
+  });
+}
+
+function karta(z) {
+  var h = '<div class="card">';
+  if (z.obrazek) h += '<img class="ico" src="' + BASE + '/assets/img/' + z.obrazek + '" alt="">';
+  h += '<h2>' + z.tytul + '</h2>';
+  h += '<div class="meta">' + nazwaKategorii(z.kategoria) + (z.wiek ? ' · ' + z.wiek : '') + '</div>';
+  if (z.rekwizyty) h += '<p><strong>Rekwizyty:</strong> ' + z.rekwizyty + '</p>';
+  if (z.skrot) h += '<p>' + z.skrot + '</p>';
+  h += '<p><a href="' + BASE + z.url + '">Pełny opis zasad</a></p>';
+  return h + '</div>';
+}
+
+document.getElementById("draw").onclick = function () {
+  var p = pula();
+  if (!p.length) return;
+  document.getElementById("result").innerHTML = karta(p[Math.floor(Math.random() * p.length)]);
+};
+
+rysujKategorie();
+</script>
